@@ -56,13 +56,14 @@ def create_base_df(cur):
     df = pd.DataFrame(rows, columns=col_names)
 
     # Clean data 
-    df.drop(['Row', 'x_coordinate', 'y_coordinate'], axis = 1, inplace = True)
-    df.rename(columns = {'timestamp':'occurred_date'}, inplace = True)
+    df.rename(columns = {'occ_date_time': 'occurred_date'}, inplace = True)
     
     # Create parameters
     df_aux = df[['occurred_date','clearance_date']].dropna()
-    avg_clearance_time = pd.DataFrame(df_aux['occurred_date'] - df_aux['clearance_date']).mean()
-    df['clearance_time'].fillna(value = avg_clearance_time, inplace = True)
+    avg_clearance_time = pd.DataFrame(pd.to_datetime(df_aux['clearance_date']) - pd.to_datetime (df_aux['occurred_date'])).mean()
+    df['clearance_date'].fillna(value = avg_clearance_time, inplace = True)
+    df['occurred_date'] = pd.to_datetime(df['occurred_date'])
+    df['clearance_date'] = pd.to_datetime(df['clearance_date'])
     logging.info(f' Table {table_id} loaded successfully into dataframe from database {postgres_database}')
     return df
 
@@ -71,7 +72,7 @@ def create_df_geo(df):
     """
     Create dataframe from Austin crime public dataset with longitude and latitude data
     """
-    df_geo = df.dropna(subset={'latitude', 'longitude'})
+    df_geo = df.dropna(subset=['x_coordinate', 'y_coordinate'])
     return df_geo
     
 
@@ -99,6 +100,6 @@ def top_crimes(df):
     """
     Create dataframe with number of crimes per hour of the day from Austin crime public dataset
     """
-    df_top_crimes = df['description'].value_counts().head(25).reset_index()
+    df_top_crimes = df['crime_type'].value_counts().head(25).reset_index()
     df_top_crimes.columns = ['crime_type', 'number_of_crimes']
     return df_top_crimes

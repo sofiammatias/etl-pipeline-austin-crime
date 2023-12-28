@@ -7,7 +7,7 @@ import traceback
 import logging
 import pandas as pd
 from dotenv import load_dotenv
-from create_dfs_from_postgresql import create_base_df, create_df_geo, create_crimes_per_hour, create_crimes_per_year, top_crimes
+from transform_create_dfs import create_base_df, create_df_geo, create_crimes_per_hour, create_crimes_per_year, top_crimes
 
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s:%(funcName)s:%(levelname)s:%(message)s')
@@ -43,10 +43,10 @@ except Exception as e:
 
 def create_new_tables_in_postgres(table_id):
     try:
-        cur.execute(f'CREATE TABLE IF NOT EXISTS {table_id}_geo (description VARCHAR(50), district VARCHAR(10), latitude FLOAT, longitude FLOAT, primary_type VARCHAR(50))')
+        cur.execute(f'CREATE TABLE IF NOT EXISTS {table_id}_geo (crime_type VARCHAR(50), district VARCHAR(10), latitude FLOAT, longitude FLOAT)')
         cur.execute(f'CREATE TABLE IF NOT EXISTS {table_id}_crimes_per_hour (hourday INTEGER, numbercrimes INTEGER)')
         cur.execute(f'CREATE TABLE IF NOT EXISTS {table_id}_crimes_per_year (year INTEGER, numbercrimes INTEGER)')
-        cur.execute(f'CREATE TABLE IF NOT EXISTS {table_id}_top_crimes  (crime VARCHAR(100), numbercrimes INTEGER')
+        cur.execute(f'CREATE TABLE IF NOT EXISTS {table_id}_top_crimes  (crime VARCHAR(100), numbercrimes INTEGER)')
         logging.info("4 tables created successfully in Postgres server")
     except Exception as e:
         traceback.print_exc()
@@ -54,10 +54,10 @@ def create_new_tables_in_postgres(table_id):
 
 
 def insert_geo_table(df_geo, table_id):
-    query = f'INSERT INTO {table_id}_geo (description, district, latitude, longitude, primary_type) VALUES (%s,%s,%s,%s,%s)'
+    query = f'INSERT INTO {table_id}_geo (crime_type, district, latitude, longitude) VALUES (%s,%s,%s,%s)'
     row_count = 0
     for _, row in df_geo.iterrows():
-        values = (row['description'], row['district'], row['latitude'], row['longitude'], row['primary_type'])
+        values = (row['crime_type'], row['district'], row['x_coordinate'], row['y_coordinate'])
         cur.execute(query,values)
         row_count += 1
     
@@ -97,9 +97,9 @@ def insert_top_crimes_table(df_top_crimes, table_id):
     logging.info(f"{row_count} rows inserted into table {table_id}_top_crimes")
 
 
-def write_dfs_to_postgres_main():
+def create_dfs_to_postgres_main():
 
-    main_df = create_base_df()
+    main_df = create_base_df(cur)
 
     df_geo = create_df_geo(main_df)
     df_crimes_per_hour = create_crimes_per_hour(main_df)
@@ -115,12 +115,14 @@ def write_dfs_to_postgres_main():
     conn.commit()
     cur.close()
     conn.close()
+
+    logging.info(f'Tables loaded to postgresql database. Connection to {dataset_id} was closed successfully')
 
 
 if __name__ == '__main__':
     
-    main_df = create_base_df()
-    
+    main_df = create_base_df(cur)
+
     df_geo = create_df_geo(main_df)
     df_crimes_per_hour = create_crimes_per_hour(main_df)
     df_crimes_per_year = create_crimes_per_year(main_df)
@@ -135,3 +137,5 @@ if __name__ == '__main__':
     conn.commit()
     cur.close()
     conn.close()
+
+    logging.info(f'Tables loaded to postgresql database. Connection to {dataset_id} was closed successfully')

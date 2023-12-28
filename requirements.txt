@@ -1,0 +1,13 @@
+# install pendulum package by installing poetry and running 
+#'pip install --no-build-isolation pendulum==2.1.2' to avoid issue with pedulum package
+poetry==1.7.1 #only here to install pendulum package
+pandas==2.1.4
+psycopg2==2.9.9
+traceback2==1.4.0
+prefect==2.14.12
+requests==2.31.0
+python-dotenv==1.0.0
+datetime==5.4
+streamlit==1.29.0
+networkx==3.2.1
+matplotlib==3.8.2
