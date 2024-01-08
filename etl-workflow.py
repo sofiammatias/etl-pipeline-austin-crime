@@ -19,4 +19,4 @@ etl_workflow()
 if __name__ == "__main__":
     etl_workflow.serve(name="etl-workflow",
                       tags=["projects"],
-                      interval=360)
+                      interval=900)
