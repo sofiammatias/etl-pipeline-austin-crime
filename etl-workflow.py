@@ -14,9 +14,5 @@ def etl_workflow():
     extract_json_to_postgres_task()
     load_dfs_to_postgres_task()
 
-etl_workflow()
-
 if __name__ == "__main__":
-    etl_workflow.serve(name="etl-workflow",
-                      tags=["projects"],
-                      interval=900)
+    etl_workflow.serve(name="etl-workflow-15min", interval=900)
