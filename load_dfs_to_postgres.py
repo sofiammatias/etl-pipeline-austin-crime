@@ -1,6 +1,7 @@
 """
 Reads the Postgres table as a dataframe and creates 4 separate dataframes from main table. 
 """
+import streamlit as st
 import psycopg2
 import os
 import traceback
@@ -118,7 +119,7 @@ def insert_top_crimes_table(df_top_crimes, table_id):
         row_count += 1
 
     logging.info(f"{row_count} rows inserted into table {table_id}_top_crimes")
-
+    st.toast (f"{row_count} rows inserted into table {table_id}_top_crimes")
 
 def create_dfs_to_postgres_main():
     main_df = create_base_df(cur)
@@ -164,3 +165,4 @@ if __name__ == "__main__":
     logging.info(
         f"Tables loaded to postgresql database. Connection to {dataset_id} was closed successfully"
     )
+    st.toast (f"Tables loaded to postgresql database. Connection to {dataset_id} was closed successfully")

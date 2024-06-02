@@ -1,7 +1,7 @@
 ###
 ### A complete description of a Prefect Deployment for flow 'etl-workflow'
 ###
-name: etl-pipeline-workflow-15min
+name: etl-pipeline-workflow
 description: null
 version: 6655ef22965d722e8b3b728c294e1a9a
 # The work queue that will handle this deployment's runs
@@ -29,7 +29,7 @@ infrastructure:
 ###
 ### DO NOT EDIT BELOW THIS LINE
 ###
-flow_name: etl-workflow
+flow_name: etl-pipeline-workflow
 manifest_path: null
 storage: null
 path: "C:\\Users\\xufia\\OneDrive\\Documentos\\Programa\xE7\xE3o - Cursos\\Projetos\\\
