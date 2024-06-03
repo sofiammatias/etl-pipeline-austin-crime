@@ -3,7 +3,6 @@ NEW: Downloads a json file from Austin Crime website API datapoint.
 Creates a new table in the Postgres server.
 Reads the file as a dataframe and inserts each record to the Postgres table. 
 """
-import streamlit as st
 import psycopg2
 import os
 import traceback2 as traceback
@@ -12,10 +11,6 @@ import pandas as pd
 import requests
 import json
 from dotenv import load_dotenv
-
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s:%(funcName)s:%(levelname)s:%(message)s"
-)
 
 
 # Loads environmental vars from .env
@@ -31,7 +26,17 @@ api_url = os.environ.get("api_url")
 dataset_id = os.environ.get("dataset_id")
 table_id = os.environ.get("table_id")
 
+#  Configures logger
+logname = "pipelinelog_part1.log"
+logging.basicConfig(
+    filename=logname,
+    filemode='a',
+    level=logging.INFO, 
+    format="%(asctime)s:%(funcName)s:%(levelname)s:%(message)s"
+)
+
 destination_path = f"{dest_folder}/{dataset_id}.json"
+destination_log = f"{dest_folder}/{logname}"
 
 try:
     conn = psycopg2.connect(
@@ -62,14 +67,11 @@ def download_json_file_from_url(api_url: str, dest_folder: str, destination_path
         json_file = data.json()
         with open(destination_path, "w") as file:
             json.dump(json_file, file)
-        logging.info(
-            f"json file downloaded successfully to the working directory {dest_folder}")
-        st.toast (f"json file downloaded successfully to the working directory {dest_folder}")
+        logging.info(f"json file downloaded successfully to the working directory {dest_folder}")
     
     except Exception as e:
         logging.error(f"Error while downloading the json file due to: {e}")
         traceback.print_exc()
-        st.toast (f"json file downloaded successfully to the working directory {dest_folder}")
 
 
 
@@ -90,7 +92,6 @@ def create_postgres_table():
         logging.info(
             f" New table {table_id} created successfully in postgres server, database {postgres_database}"
         )
-        st.toast (f" New table {table_id} created successfully in postgres server, database {postgres_database}")
     except:
         logging.warning(f" Check if the table {table_id} exists")
 
@@ -149,10 +150,7 @@ def write_to_postgres(destination_path: str):
                 ),
             )
 
-    logging.info(
-        f" {inserted_row_count} rows from csv file inserted into {table_id} table successfully"
-    )
-    st.toast (f" {inserted_row_count} rows from csv file inserted into {table_id} table successfully")
+    logging.info (f" {inserted_row_count} rows from csv file inserted into {table_id} table successfully")
 
 
 def write_json_to_postgres_main():
@@ -163,6 +161,7 @@ def write_json_to_postgres_main():
     cur.close()
     conn.close()
     logging.info(f"Connection to {dataset_id} was closed successfully")
+    logging.getLogger().addHandler(logging.StreamHandler())
 
 
 if __name__ == "__main__":
@@ -173,3 +172,6 @@ if __name__ == "__main__":
     cur.close()
     conn.close()
     logging.info(f"Connection to {dataset_id} was closed successfully")
+    logging.getLogger().addHandler(logging.StreamHandler())
+
+

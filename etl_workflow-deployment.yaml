@@ -1,7 +1,7 @@
 ###
 ### A complete description of a Prefect Deployment for flow 'etl-workflow'
 ###
-name: etl-pipeline-workflow
+name: etl-pipeline
 description: null
 version: 6655ef22965d722e8b3b728c294e1a9a
 # The work queue that will handle this deployment's runs
@@ -10,7 +10,7 @@ work_pool_name: null
 tags: []
 parameters: {}
 schedule:
-  interval: 900.0
+  interval: 60
   anchor_date: '2024-01-08T17:21:43.581834+00:00'
   timezone: UTC
 is_schedule_active: null
@@ -29,12 +29,12 @@ infrastructure:
 ###
 ### DO NOT EDIT BELOW THIS LINE
 ###
-flow_name: etl-pipeline-workflow
+flow_name: etl-pipeline
 manifest_path: null
 storage: null
 path: "C:\\Users\\xufia\\OneDrive\\Documentos\\Programa\xE7\xE3o - Cursos\\Projetos\\\
   etl-pipeline-austin-crime"
-entrypoint: etl-workflow.py:etl_workflow
+entrypoint: etl-workflow.py:etl-pipeline
 parameter_openapi_schema:
   title: Parameters
   type: object

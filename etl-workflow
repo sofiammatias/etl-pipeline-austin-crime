@@ -1,0 +1,4 @@
+digraph {
+	"extract_json_to_postgres_task-0"
+	"load_dfs_to_postgres_task-0"
+}
