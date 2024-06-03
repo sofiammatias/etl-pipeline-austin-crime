@@ -174,3 +174,23 @@ Executing 'load_dfs_to_postgres_task-0' immediately...
 Finished in state Completed()
 23:37:02.381 | INFO    | Flow run 'warping-coati' - Finished in state Completed('All states completed.')
 Finished in state Completed('All states completed.')
+C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\2_See_The_Data.py:47: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df_crime = pd.read_sql_query(sql, conn)
+C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\2_See_The_Data.py:49: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df_geo = pd.read_sql_query(sql_geo, conn)
+C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\2_See_The_Data.py:51: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df_hour = pd.read_sql_query(sql_hour, conn)
+C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\2_See_The_Data.py:53: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df_year = pd.read_sql_query(sql_year, conn)
+C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\2_See_The_Data.py:55: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df_top = pd.read_sql_query(sql_top, conn)
+C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\2_See_The_Data.py:47: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df_crime = pd.read_sql_query(sql, conn)
+C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\2_See_The_Data.py:49: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df_geo = pd.read_sql_query(sql_geo, conn)
+C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\2_See_The_Data.py:51: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df_hour = pd.read_sql_query(sql_hour, conn)
+C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\2_See_The_Data.py:53: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df_year = pd.read_sql_query(sql_year, conn)
+C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\2_See_The_Data.py:55: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+  df_top = pd.read_sql_query(sql_top, conn)
