@@ -4,11 +4,7 @@ import pandas as pd
 import numpy as np
 import time
 import os
-import psycopg2
-import traceback
 import subprocess
-import requests
-import json
 from dotenv import load_dotenv
 
 
@@ -40,22 +36,6 @@ def card(wch_colour_box, wch_colour_font, sline, i, iconname=None):
                             margin-top: 0;'>{sline}</style></span></p>"""
       return lnk + htmlstr
 
-def read_tables_from_postgres(table_id):
-    
-    try:
-        sql = f"SELECT * FROM {table_id};"
-        df_crime = pd.read_sql_query(sql, conn)
-        sql_geo = f"SELECT * FROM {table_id}_geo;"
-        df_geo = pd.read_sql_query(sql_geo, conn)
-        sql_hour = f"SELECT * FROM {table_id}_crimes_per_hour;"
-        df_hour = pd.read_sql_query(sql_hour, conn)
-        sql_year = f"SELECT * FROM {table_id}_crimes_per_year;"
-        df_year = pd.read_sql_query(sql_year, conn)
-        sql_top = f"SELECT * FROM {table_id}_top_crimes;"
-        df_top = pd.read_sql_query(sql_top, conn)
-    except Exception as e:
-        st.write(f"❗Error: Tables cannot be read due to: {e}")
-    return df_crime, df_geo, df_hour, df_year, df_top
 
 
 # Loads environmental vars from .env

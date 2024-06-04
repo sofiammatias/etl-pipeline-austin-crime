@@ -75,8 +75,8 @@ def insert_geo_table(df_geo, table_id):
         values = (
             row["crime_type"],
             row["district"],
-            row["x_coordinate"],
-            row["y_coordinate"],
+            row["latitude"],
+            row["longitude"],
         )
         cur.execute(query, values)
         row_count += 1
@@ -86,20 +86,20 @@ def insert_geo_table(df_geo, table_id):
 
 def insert_crimes_per_hour_table(df_crimes_per_hour, table_id):
     query = (
-        f"INSERT INTO {table_id}_crimes_per_hour (hourday, numbercrimes) VALUES (%s,%s)"
+        f"INSERT INTO {table_id}_crimes_per_hour (hour, number_of_crimes) VALUES (%s,%s)"
     )
     row_count = 0
+    breakpoint()
     for _, row in df_crimes_per_hour.iterrows():
         values = (row["hour"], row["number_of_crimes"])
         cur.execute(query, values)
         row_count += 1
-
     logging.info(f"{row_count} rows inserted into table {table_id}_crimes_per_hour")
 
 
 def insert_crimes_per_year_table(df_crimes_per_year, table_id):
     query = (
-        f"INSERT INTO {table_id}_crimes_per_year (year, numbercrimes) VALUES (%s,%s)"
+        f"INSERT INTO {table_id}_crimes_per_year (year, number_of_crimes) VALUES (%s,%s)"
     )
     row_count = 0
     for _, row in df_crimes_per_year.iterrows():
@@ -111,7 +111,7 @@ def insert_crimes_per_year_table(df_crimes_per_year, table_id):
 
 
 def insert_top_crimes_table(df_top_crimes, table_id):
-    query = f"INSERT INTO {table_id}_top_crimes (crime, numbercrimes) VALUES (%s,%s)"
+    query = f"INSERT INTO {table_id}_top_crimes (crime_type, number_of_crimes) VALUES (%s,%s)"
     row_count = 0
     for _, row in df_top_crimes.iterrows():
         values = (row["crime_type"], row["number_of_crimes"])

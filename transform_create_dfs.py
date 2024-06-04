@@ -3,6 +3,7 @@ Reads the Postgres table as a dataframe and creates 4 separate dataframes from m
 """
 import psycopg2
 import os
+import datetime
 import traceback
 import logging
 import pandas as pd
@@ -54,18 +55,16 @@ def create_base_df(cur):
 
     col_names = [desc[0] for desc in cur.description]
     df = pd.DataFrame(rows, columns=col_names)
-
     # Clean data
-    df.rename(columns={"occ_date_time": "occurred_date"}, inplace=True)
+    df.rename(columns={"occ_date": "occurred_date"}, inplace=True)
+    df.rename(columns={"rep_date_time": "reported_time"}, inplace=True)
 
-    # Create parameters
-    df_aux = df[["occurred_date", "clearance_date"]].dropna()
-    avg_clearance_time = pd.DataFrame(
-        pd.to_datetime(df_aux["clearance_date"])
-        - pd.to_datetime(df_aux["occurred_date"])
-    ).mean()
-    df["clearance_date"].fillna(value=avg_clearance_time, inplace=True)
+    #### Filling nan with average clearance time intervals
+    most_common_clearance_date = df["clearance_date"].value_counts().index[1]
+    #most_common_clearance_date = datetime.strptime(most_common_clearance_date, '%m/%d/%y %H:%M:%S')
+    df[df['clearance_date'] == 'nan'] = most_common_clearance_date
     df["occurred_date"] = pd.to_datetime(df["occurred_date"])
+    df["reported_time"] = pd.to_datetime(df["reported_time"])
     df["clearance_date"] = pd.to_datetime(df["clearance_date"])
     logging.info(
         f" Table {table_id} loaded successfully into dataframe from database {postgres_database}"
@@ -77,7 +76,7 @@ def create_df_geo(df):
     """
     Create dataframe from Austin crime public dataset with longitude and latitude data
     """
-    df_geo = df.dropna(subset=["x_coordinate", "y_coordinate"])
+    df_geo = df.dropna(subset=["latitude", "longitude"])
     return df_geo
 
 
@@ -85,9 +84,12 @@ def create_crimes_per_hour(df):
     """
     Create dataframe with number of crimes per hour of the day from Austin crime public dataset
     """
-    crimes_per_hour = df["occurred_date"].dt.hour.value_counts().sort_index()
+    breakpoint()
+    crimes_per_hour = df["reported_time"].dt.hour.value_counts().sort_index()
     df_crimes_per_hour = crimes_per_hour.reset_index()
     df_crimes_per_hour.columns = ["hour", "number_of_crimes"]
+    df_crimes_per_hour = df_crimes_per_hour.groupby(["hour"]).sum()
+    df_crimes_per_hour = df_crimes_per_hour.reset_index()
     return df_crimes_per_hour
 
 
@@ -98,6 +100,8 @@ def create_crimes_per_year(df):
     crimes_per_year = df["occurred_date"].dt.year.value_counts().sort_index()
     df_crimes_per_year = crimes_per_year.reset_index()
     df_crimes_per_year.columns = ["year", "number_of_crimes"]
+    df_crimes_per_year = df_crimes_per_year.groupby(["year"]).sum()
+
     return df_crimes_per_year
 
 
@@ -107,4 +111,6 @@ def top_crimes(df):
     """
     df_top_crimes = df["crime_type"].value_counts().head(25).reset_index()
     df_top_crimes.columns = ["crime_type", "number_of_crimes"]
+    df_top_crimes = df_top_crimes.groupby(["crime_type"]).sum()
+
     return df_top_crimes

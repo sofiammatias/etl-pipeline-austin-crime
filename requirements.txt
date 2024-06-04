@@ -11,3 +11,4 @@ datetime==5.4
 streamlit==1.29.0
 networkx==3.2.1
 matplotlib==3.8.2
+sqlalchemy==2.0.30

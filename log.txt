@@ -1,196 +1,21 @@
-05:25:31.817 | INFO    | prefect.engine - Created flow run 'teal-lori' for flow 'etl-workflow'
-05:25:32.002 | INFO    | Flow run 'teal-lori' - Created task run 'extract_json_to_postgres_task-0' for task 'extract_json_to_postgres_task'
-05:25:32.005 | INFO    | Flow run 'teal-lori' - Executing 'extract_json_to_postgres_task-0' immediately...
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\extract_json_to_postgres.py:103: FutureWarning: The behavior of 'to_datetime' with 'unit' when parsing strings is deprecated. In a future version, strings will be parsed as datetime strings, matching the behavior without a 'unit'. To retain the old behavior, explicitly cast ints or floats to numeric type before calling to_datetime.
-  df_aux = pd.read_json(f"{destination_path}")
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\extract_json_to_postgres.py:103: FutureWarning: The behavior of 'to_datetime' with 'unit' when parsing strings is deprecated. In a future version, strings will be parsed as datetime strings, matching the behavior without a 'unit'. To retain the old behavior, explicitly cast ints or floats to numeric type before calling to_datetime.
-  df_aux = pd.read_json(f"{destination_path}")
-05:25:37.789 | INFO    | Task run 'extract_json_to_postgres_task-0' - Finished in state Completed()
-Finished in state Completed()
-05:25:37.844 | INFO    | Flow run 'teal-lori' - Created task run 'load_dfs_to_postgres_task-0' for task 'load_dfs_to_postgres_task'
-Created task run 'load_dfs_to_postgres_task-0' for task 'load_dfs_to_postgres_task'
-05:25:37.846 | INFO    | Flow run 'teal-lori' - Executing 'load_dfs_to_postgres_task-0' immediately...
-Executing 'load_dfs_to_postgres_task-0' immediately...
-2024-06-03 05:25:43.403 
-  [33m[1mWarning:[0m to view this Streamlit app on a browser, run it with the following
-  command:
-
-    streamlit run etl-workflow.py [ARGUMENTS]
-05:25:43.504 | INFO    | Task run 'load_dfs_to_postgres_task-0' - Finished in state Completed()
-Finished in state Completed()
-05:25:43.607 | INFO    | Flow run 'teal-lori' - Finished in state Completed('All states completed.')
-Finished in state Completed('All states completed.')
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\2_See_The_Data.py:47: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\3_See_The_Dashboard.py:47: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
   df_crime = pd.read_sql_query(sql, conn)
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\2_See_The_Data.py:49: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\3_See_The_Dashboard.py:49: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
   df_geo = pd.read_sql_query(sql_geo, conn)
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\2_See_The_Data.py:51: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\3_See_The_Dashboard.py:51: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
   df_hour = pd.read_sql_query(sql_hour, conn)
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\2_See_The_Data.py:53: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\3_See_The_Dashboard.py:54: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
   df_year = pd.read_sql_query(sql_year, conn)
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\2_See_The_Data.py:55: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\3_See_The_Dashboard.py:56: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
   df_top = pd.read_sql_query(sql_top, conn)
-05:31:08.918 | INFO    | prefect.engine - Created flow run 'elated-dugong' for flow 'etl-workflow'
-05:31:09.137 | INFO    | Flow run 'elated-dugong' - Created task run 'extract_json_to_postgres_task-0' for task 'extract_json_to_postgres_task'
-05:31:09.141 | INFO    | Flow run 'elated-dugong' - Executing 'extract_json_to_postgres_task-0' immediately...
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\extract_json_to_postgres.py:103: FutureWarning: The behavior of 'to_datetime' with 'unit' when parsing strings is deprecated. In a future version, strings will be parsed as datetime strings, matching the behavior without a 'unit'. To retain the old behavior, explicitly cast ints or floats to numeric type before calling to_datetime.
-  df_aux = pd.read_json(f"{destination_path}")
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\extract_json_to_postgres.py:103: FutureWarning: The behavior of 'to_datetime' with 'unit' when parsing strings is deprecated. In a future version, strings will be parsed as datetime strings, matching the behavior without a 'unit'. To retain the old behavior, explicitly cast ints or floats to numeric type before calling to_datetime.
-  df_aux = pd.read_json(f"{destination_path}")
-05:31:12.748 | INFO    | Task run 'extract_json_to_postgres_task-0' - Finished in state Completed()
-Finished in state Completed()
-05:31:12.830 | INFO    | Flow run 'elated-dugong' - Created task run 'load_dfs_to_postgres_task-0' for task 'load_dfs_to_postgres_task'
-Created task run 'load_dfs_to_postgres_task-0' for task 'load_dfs_to_postgres_task'
-05:31:12.833 | INFO    | Flow run 'elated-dugong' - Executing 'load_dfs_to_postgres_task-0' immediately...
-Executing 'load_dfs_to_postgres_task-0' immediately...
-2024-06-03 05:31:18.186 
-  [33m[1mWarning:[0m to view this Streamlit app on a browser, run it with the following
-  command:
-
-    streamlit run etl-workflow.py [ARGUMENTS]
-05:31:18.283 | INFO    | Task run 'load_dfs_to_postgres_task-0' - Finished in state Completed()
-Finished in state Completed()
-05:31:18.374 | INFO    | Flow run 'elated-dugong' - Finished in state Completed('All states completed.')
-Finished in state Completed('All states completed.')
-2024-06-03 05:31:22.770 Uncaught app exception
-Traceback (most recent call last):
-  File "C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\etl-pipeline-py3-12\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 534, in _run_script
-    exec(code, module.__dict__)
-  File "C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\1_See_The_Pipeline.py", line 163, in <module>
-    with st.expander ("Check log file..."):
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\etl-pipeline-py3-12\Lib\site-packages\streamlit\runtime\metrics_util.py", line 396, in wrapped_func
-    result = non_optional_func(*args, **kwargs)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\etl-pipeline-py3-12\Lib\site-packages\streamlit\elements\layouts.py", line 420, in expander
-    return self.dg._block(block_proto=block_proto)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\etl-pipeline-py3-12\Lib\site-packages\streamlit\delta_generator.py", line 598, in _block
-    raise StreamlitAPIException(
-streamlit.errors.StreamlitAPIException: Expanders may not be nested inside other expanders.
-05:32:36.342 | INFO    | prefect.engine - Created flow run 'glistening-agouti' for flow 'etl-workflow'
-05:32:36.547 | INFO    | Flow run 'glistening-agouti' - Created task run 'extract_json_to_postgres_task-0' for task 'extract_json_to_postgres_task'
-05:32:36.549 | INFO    | Flow run 'glistening-agouti' - Executing 'extract_json_to_postgres_task-0' immediately...
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\extract_json_to_postgres.py:103: FutureWarning: The behavior of 'to_datetime' with 'unit' when parsing strings is deprecated. In a future version, strings will be parsed as datetime strings, matching the behavior without a 'unit'. To retain the old behavior, explicitly cast ints or floats to numeric type before calling to_datetime.
-  df_aux = pd.read_json(f"{destination_path}")
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\extract_json_to_postgres.py:103: FutureWarning: The behavior of 'to_datetime' with 'unit' when parsing strings is deprecated. In a future version, strings will be parsed as datetime strings, matching the behavior without a 'unit'. To retain the old behavior, explicitly cast ints or floats to numeric type before calling to_datetime.
-  df_aux = pd.read_json(f"{destination_path}")
-05:32:41.980 | INFO    | Task run 'extract_json_to_postgres_task-0' - Finished in state Completed()
-Finished in state Completed()
-05:32:42.085 | INFO    | Flow run 'glistening-agouti' - Created task run 'load_dfs_to_postgres_task-0' for task 'load_dfs_to_postgres_task'
-Created task run 'load_dfs_to_postgres_task-0' for task 'load_dfs_to_postgres_task'
-05:32:42.089 | INFO    | Flow run 'glistening-agouti' - Executing 'load_dfs_to_postgres_task-0' immediately...
-Executing 'load_dfs_to_postgres_task-0' immediately...
-2024-06-03 05:32:47.269 
-  [33m[1mWarning:[0m to view this Streamlit app on a browser, run it with the following
-  command:
-
-    streamlit run etl-workflow.py [ARGUMENTS]
-05:32:47.382 | INFO    | Task run 'load_dfs_to_postgres_task-0' - Finished in state Completed()
-Finished in state Completed()
-05:32:47.469 | INFO    | Flow run 'glistening-agouti' - Finished in state Completed('All states completed.')
-Finished in state Completed('All states completed.')
-05:35:39.701 | INFO    | prefect.engine - Created flow run 'bold-ostrich' for flow 'etl-workflow'
-05:35:39.958 | INFO    | Flow run 'bold-ostrich' - Created task run 'extract_json_to_postgres_task-0' for task 'extract_json_to_postgres_task'
-05:35:39.963 | INFO    | Flow run 'bold-ostrich' - Executing 'extract_json_to_postgres_task-0' immediately...
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\extract_json_to_postgres.py:103: FutureWarning: The behavior of 'to_datetime' with 'unit' when parsing strings is deprecated. In a future version, strings will be parsed as datetime strings, matching the behavior without a 'unit'. To retain the old behavior, explicitly cast ints or floats to numeric type before calling to_datetime.
-  df_aux = pd.read_json(f"{destination_path}")
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\extract_json_to_postgres.py:103: FutureWarning: The behavior of 'to_datetime' with 'unit' when parsing strings is deprecated. In a future version, strings will be parsed as datetime strings, matching the behavior without a 'unit'. To retain the old behavior, explicitly cast ints or floats to numeric type before calling to_datetime.
-  df_aux = pd.read_json(f"{destination_path}")
-05:35:44.213 | INFO    | Task run 'extract_json_to_postgres_task-0' - Finished in state Completed()
-Finished in state Completed()
-05:35:44.285 | INFO    | Flow run 'bold-ostrich' - Created task run 'load_dfs_to_postgres_task-0' for task 'load_dfs_to_postgres_task'
-Created task run 'load_dfs_to_postgres_task-0' for task 'load_dfs_to_postgres_task'
-05:35:44.288 | INFO    | Flow run 'bold-ostrich' - Executing 'load_dfs_to_postgres_task-0' immediately...
-Executing 'load_dfs_to_postgres_task-0' immediately...
-2024-06-03 05:35:50.060 
-  [33m[1mWarning:[0m to view this Streamlit app on a browser, run it with the following
-  command:
-
-    streamlit run etl-workflow.py [ARGUMENTS]
-05:35:50.171 | INFO    | Task run 'load_dfs_to_postgres_task-0' - Finished in state Completed()
-Finished in state Completed()
-05:35:50.277 | INFO    | Flow run 'bold-ostrich' - Finished in state Completed('All states completed.')
-Finished in state Completed('All states completed.')
-2024-06-03 05:35:54.907 Uncaught app exception
-Traceback (most recent call last):
-  File "C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\etl-pipeline-py3-12\Lib\site-packages\streamlit\runtime\scriptrunner\script_runner.py", line 534, in _run_script
-    exec(code, module.__dict__)
-  File "C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\1_See_The_Pipeline.py", line 165, in <module>
-    log = f.read(f)
-          ^^^^^^^^^
-TypeError: argument should be integer or None, not '_io.TextIOWrapper'
-23:36:38.194 | INFO    | prefect.engine - Created flow run 'warping-coati' for flow 'etl-workflow'
-23:36:38.589 | INFO    | Flow run 'warping-coati' - Created task run 'extract_json_to_postgres_task-0' for task 'extract_json_to_postgres_task'
-23:36:38.595 | INFO    | Flow run 'warping-coati' - Executing 'extract_json_to_postgres_task-0' immediately...
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\extract_json_to_postgres.py:103: FutureWarning: The behavior of 'to_datetime' with 'unit' when parsing strings is deprecated. In a future version, strings will be parsed as datetime strings, matching the behavior without a 'unit'. To retain the old behavior, explicitly cast ints or floats to numeric type before calling to_datetime.
-  df_aux = pd.read_json(f"{destination_path}")
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\extract_json_to_postgres.py:103: FutureWarning: The behavior of 'to_datetime' with 'unit' when parsing strings is deprecated. In a future version, strings will be parsed as datetime strings, matching the behavior without a 'unit'. To retain the old behavior, explicitly cast ints or floats to numeric type before calling to_datetime.
-  df_aux = pd.read_json(f"{destination_path}")
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\extract_json_to_postgres.py:134: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
-  int(row[0]),
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\extract_json_to_postgres.py:135: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
-  str(row[1]),
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\extract_json_to_postgres.py:136: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
-  float(row[2]),
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\extract_json_to_postgres.py:137: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
-  str(row[3]),
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\extract_json_to_postgres.py:138: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
-  str(row[4]),
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\extract_json_to_postgres.py:139: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
-  (row[5]),
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\extract_json_to_postgres.py:140: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
-  str(row[6]),
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\extract_json_to_postgres.py:141: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
-  str(row[7]),
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\extract_json_to_postgres.py:142: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
-  str(row[8]),
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\extract_json_to_postgres.py:143: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
-  str(row[9]),
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\extract_json_to_postgres.py:144: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
-  str(row[10]),
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\extract_json_to_postgres.py:145: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
-  str(row[11]),
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\extract_json_to_postgres.py:146: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
-  float(row[12]),
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\extract_json_to_postgres.py:147: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
-  float(row[13]),
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\extract_json_to_postgres.py:148: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
-  float(row[14]),
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\extract_json_to_postgres.py:149: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
-  str(row[15]),
-23:36:47.506 | INFO    | Task run 'extract_json_to_postgres_task-0' - Finished in state Completed()
-Finished in state Completed()
-23:36:47.628 | INFO    | Flow run 'warping-coati' - Created task run 'load_dfs_to_postgres_task-0' for task 'load_dfs_to_postgres_task'
-Created task run 'load_dfs_to_postgres_task-0' for task 'load_dfs_to_postgres_task'
-23:36:47.633 | INFO    | Flow run 'warping-coati' - Executing 'load_dfs_to_postgres_task-0' immediately...
-Executing 'load_dfs_to_postgres_task-0' immediately...
-2024-06-03 23:37:01.878 
-  [33m[1mWarning:[0m to view this Streamlit app on a browser, run it with the following
-  command:
-
-    streamlit run etl-workflow.py [ARGUMENTS]
-23:37:02.097 | INFO    | Task run 'load_dfs_to_postgres_task-0' - Finished in state Completed()
-Finished in state Completed()
-23:37:02.381 | INFO    | Flow run 'warping-coati' - Finished in state Completed('All states completed.')
-Finished in state Completed('All states completed.')
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\2_See_The_Data.py:47: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\3_See_The_Dashboard.py:47: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
   df_crime = pd.read_sql_query(sql, conn)
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\2_See_The_Data.py:49: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\3_See_The_Dashboard.py:49: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
   df_geo = pd.read_sql_query(sql_geo, conn)
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\2_See_The_Data.py:51: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\3_See_The_Dashboard.py:51: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
   df_hour = pd.read_sql_query(sql_hour, conn)
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\2_See_The_Data.py:53: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\3_See_The_Dashboard.py:54: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
   df_year = pd.read_sql_query(sql_year, conn)
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\2_See_The_Data.py:55: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\3_See_The_Dashboard.py:56: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
   df_top = pd.read_sql_query(sql_top, conn)
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\2_See_The_Data.py:47: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
-  df_crime = pd.read_sql_query(sql, conn)
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\2_See_The_Data.py:49: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
-  df_geo = pd.read_sql_query(sql_geo, conn)
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\2_See_The_Data.py:51: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
-  df_hour = pd.read_sql_query(sql_hour, conn)
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\2_See_The_Data.py:53: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
-  df_year = pd.read_sql_query(sql_year, conn)
-C:\Users\xufia\OneDrive\Documentos\Programação - Cursos\Projetos\etl-pipeline-austin-crime\pages\2_See_The_Data.py:55: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
-  df_top = pd.read_sql_query(sql_top, conn)
+^C

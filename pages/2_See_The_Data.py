@@ -2,14 +2,11 @@ import streamlit as st
 from prefect import task, flow 
 import pandas as pd
 import numpy as np
-import time
 import os
 import psycopg2
 import traceback
-import subprocess
-import requests
-import json
 from dotenv import load_dotenv
+from read_data_from_postgres import read_all_tables_from_postgres
 
 
 st.set_page_config(page_title='ETL Pipeline' ,layout="wide",page_icon='🔁')
@@ -39,24 +36,6 @@ def card(wch_colour_box, wch_colour_font, sline, i, iconname=None):
                             </style><BR><span style='font-size: 14px; 
                             margin-top: 0;'>{sline}</style></span></p>"""
       return lnk + htmlstr
-
-def read_tables_from_postgres(table_id):
-    
-    try:
-        sql = f"SELECT * FROM {table_id};"
-        df_crime = pd.read_sql_query(sql, conn)
-        sql_geo = f"SELECT * FROM {table_id}_geo;"
-        df_geo = pd.read_sql_query(sql_geo, conn)
-        sql_hour = f"SELECT * FROM {table_id}_crimes_per_hour;"
-        df_hour = pd.read_sql_query(sql_hour, conn)
-        sql_year = f"SELECT * FROM {table_id}_crimes_per_year;"
-        df_year = pd.read_sql_query(sql_year, conn)
-        sql_top = f"SELECT * FROM {table_id}_top_crimes;"
-        df_top = pd.read_sql_query(sql_top, conn)
-    except Exception as e:
-        st.write(f"❗Error: Tables cannot be read due to: {e}")
-    return df_crime, df_geo, df_hour, df_year, df_top
-
 
 # Loads environmental vars from .env
 load_dotenv()
@@ -116,11 +95,9 @@ with st.container(border=True):
         if os.path. exists(destination_path):
             os.remove (destination_path)    
 
-st.write(finished_workflow)
-
 # Pipeline contents
 if finished_workflow == 'true':
-    df_crimes, df_geo, df_hour, df_year, df_top_crimes = read_tables_from_postgres(table_id)
+    df_crimes, df_geo, df_hour, df_year, df_top_crimes = read_all_tables_from_postgres(table_id)
     options_dict = {'json': df_crimes, '_geo': df_geo, '_hour': df_hour, '_year': df_year, '_top': df_top_crimes}
     option = st.selectbox("Choose a table from postgreSQL database:",
     (f"Table {table_id} from json", f"Table {table_id}_geo", f"Table {table_id}_crimes_by_hour",f"Table {table_id}_crimes_by_year", f"Table {table_id}_top_crimes"))

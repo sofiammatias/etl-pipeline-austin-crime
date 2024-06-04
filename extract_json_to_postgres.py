@@ -85,8 +85,8 @@ def create_postgres_table():
                     address VARCHAR(100), census_tract FLOAT, clearance_date VARCHAR(50), 
                     clearance_status VARCHAR(50), council_district FLOAT, category_description VARCHAR(100), 
                     district VARCHAR(50), location_type VARCHAR(50), crime_type VARCHAR(100), 
-                    family_violence VARCHAR(100), occ_date_time VARCHAR(50), x_coordinate FLOAT, 
-                    y_coordinate FLOAT, year FLOAT, zipcode VARCHAR(50))"""
+                    family_violence VARCHAR(100), occ_date VARCHAR(50), rep_date_time VARCHAR(50), latitude FLOAT, 
+                    longitude FLOAT, year FLOAT, zipcode VARCHAR(50))"""
         )
 
         logging.info(
@@ -114,9 +114,10 @@ def write_to_postgres(destination_path: str):
             "location_type",
             "crime_type",
             "family_violence",
-            "occ_date_time",
-            "x_coordinate",
-            "y_coordinate",
+            "occ_date",
+            "rep_date_time",
+            "latitude",
+            "longitude",
             "year",
             "zipcode",
         ]
@@ -129,24 +130,25 @@ def write_to_postgres(destination_path: str):
         if result[0] == 0:
             inserted_row_count += 1
             cur.execute(
-                f"""INSERT INTO {table_id} (incident_report_number, address, census_tract, clearance_date, clearance_status, council_district, category_description, district, location_type, crime_type, family_violence, occ_date_time, x_coordinate, y_coordinate, year, zipcode) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+                f"""INSERT INTO {table_id} (incident_report_number, address, census_tract, clearance_date, clearance_status, council_district, category_description, district, location_type, crime_type, family_violence, occ_date, rep_date_time, latitude, longitude, year, zipcode) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
                 (
                     int(row[0]),
                     str(row[1]),
                     float(row[2]),
                     str(row[3]),
                     str(row[4]),
-                    (row[5]),
+                    str(row[5]),
                     str(row[6]),
                     str(row[7]),
                     str(row[8]),
                     str(row[9]),
                     str(row[10]),
                     str(row[11]),
-                    float(row[12]),
-                    float(row[13]),
+                    str(row[12]),
+                    str(row[13]),                    
                     float(row[14]),
-                    str(row[15]),
+                    float(row[15]),
+                    str(row[16]),
                 ),
             )
 
