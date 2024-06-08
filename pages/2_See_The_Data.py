@@ -66,7 +66,7 @@ with st.container(border=True):
     st.write("""The pipeline retrieves a .json file from https://data.austintexas.gov/ API and saves 
          it into local folder *data*. The pipeline then creates 5 tables into a postgreSQL database: a detailed 
          table with data from the .json file and 4 final tables with aggragated / resumed data for analysis. You 
-         can check all the raw data in this page: the .jjson file in its working folder and the tables from the 
+         can check all the raw data in this page: the .json file in its working folder and the tables from the 
          postgreSQL.""")
     st.write("""🤔 But what if the files and database are all local and the data pipeline doesn't exist?  Make 
          sure the flow is really working by **deleting** both the .json file and the postgres 
