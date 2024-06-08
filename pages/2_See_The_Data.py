@@ -1,10 +1,6 @@
 import streamlit as st
-from prefect import task, flow 
-import pandas as pd
-import numpy as np
 import os
-import psycopg2
-import traceback
+from sqlalchemy import create_engine, text
 from dotenv import load_dotenv
 from read_data_from_postgres import read_all_tables_from_postgres
 
@@ -52,20 +48,7 @@ table_id = os.environ.get("table_id")
 destination_path = f"{dest_folder}/{dataset_id}.json"
 finished_workflow = os.environ.get("finished_workflow")
 
-try:
-    conn = psycopg2.connect(
-        host=postgres_host,
-        database=postgres_database,
-        user=postgres_user,
-        password=postgres_password,
-        port=postgres_port,
-    )
-    cur = conn.cursor()
-    #logging.info("Postgres server connection is successful")
-except Exception as e:
-    traceback.print_exc()
-    #logging.error("Couldn't create the Postgres connection")
-
+engine = create_engine(f'postgresql://{postgres_user}:{postgres_password}@{postgres_host}:{postgres_port}/{postgres_database}')
 
 # Building app
 st.title("ETL Pipeline - Austin Crime Database 👮‍♂️")
@@ -78,40 +61,62 @@ with st.expander ("How to use this app:"):
     it with your current date and time. The pipeline is downloading the lastest datafrom the API  \n - Choose 
     a table from the dropdown list to visualize the tables in the database""")
 
-# Explanation of what can be seen in "Data" tab    
-st.write("""The pipeline retrieves a .json file from https://data.austintexas.gov/ API and saves 
-        it into local folder *data*. The pipeline then creates 5 tables into a postgreSQL database: a table with the 
-        original data from the .json file and 4 final tables with required data for analysis as well as some 
-        aggregation calculations""")
-
-st.write ("Contents of *data* folder:")
-with st.container(border=True):
-    for f in os.listdir("./data/"):
-        if len(f) == 0:
-            st.write ("(empty)")
-        else:
-            st.write (f)
-    if st.button ("Delete .json file"):
-        if os.path. exists(destination_path):
-            os.remove (destination_path)    
+# Explanation of what can be seen in "Data" tab  
+with st.container(border=True):  
+    st.write("""The pipeline retrieves a .json file from https://data.austintexas.gov/ API and saves 
+         it into local folder *data*. The pipeline then creates 5 tables into a postgreSQL database: a detailed 
+         table with data from the .json file and 4 final tables with aggragated / resumed data for analysis. You 
+         can check all the raw data in this page: the .jjson file in its working folder and the tables from the 
+         postgreSQL.""")
+    st.write("""🤔 But what if the files and database are all local and the data pipeline doesn't exist?  Make 
+         sure the flow is really working by **deleting** both the .json file and the postgres 
+         tables!  \n  ⏩⏩⏩ Run the pipeline again in 'See The Pipeline' and come back here to see the new 
+         .json file and tables again!  \n  Check out the dates of the latest 5 records and see how close they 
+         are from today! 📆""")
 
 # Pipeline contents
 if finished_workflow == 'true':
+
+    col1, col2 = st.columns([3,1])
     df_crimes, df_geo, df_hour, df_year, df_top_crimes = read_all_tables_from_postgres(table_id)
-    options_dict = {'json': df_crimes, '_geo': df_geo, '_hour': df_hour, '_year': df_year, '_top': df_top_crimes}
-    option = st.selectbox("Choose a table from postgreSQL database:",
-    (f"Table {table_id} from json", f"Table {table_id}_geo", f"Table {table_id}_crimes_by_hour",f"Table {table_id}_crimes_by_year", f"Table {table_id}_top_crimes"))
-    for key in options_dict.keys():
-        if key in option:
-            st.dataframe(options_dict[key])
-    with st.expander (f"Latest 5 records"):
-        df_crimes_no_nan = df_crimes.loc[df_crimes['occ_date_time'] != np.datetime64('NaT')]
-        st.dataframe (df_crimes_no_nan.head())
-  
+    five_records = df_crimes.sort_values(by='occurred_date', ascending=False).head()
+    f = os.listdir("./data/")
+    labels = [f"Detailed table {table_id}", f"Table {table_id}_geo", f"Table {table_id}_crimes_by_hour",f"Table {table_id}_crimes_by_year", f"Table {table_id}_top_crimes", "5 latest records"]
+    if len(f) == 0:
+        del_labels = ["None", "SQL tables (all)"]
+    else:
+        del_labels = ["None", f"File {f[0]}", "SQL tables (all)"]
+        filename = f
+
+    with col1:
+        st.write(f'See {dataset_id}.json in its working folder')
+        with st.container(border=True):
+            st.write("📂 *data* folder:")
+            st.write(filename)
+
+        options_dict_dfs = {'Detailed': df_crimes, '_geo': df_geo, '_hour': df_hour, '_year': df_year, '_top': df_top_crimes, '5 records': five_records}
+        option2 = st.selectbox("Choose a table:", labels)
+        for key in options_dict_dfs.keys():
+            if key in option2:
+                st.write(key)
+                st.dataframe(options_dict_dfs[key])
+    
+    with col2:
+        with st.container():
+            option1 = st.selectbox('Choose something to delete:', del_labels)            
+            if st.button ("Delete"):
+                if os.path.exists(destination_path) and option1 == f"File {f[0]}":
+                    os.remove (destination_path)
+                elif option1 == 'None':
+                    st.write('Nothing to delete')
+                else:
+                    tablenames = [f"{table_id}", f"{table_id}_geo", f"{table_id}_crimes_by_hour",f"{table_id}_crimes_by_year", f"{table_id}_top_crimes"]
+                    for name in tablenames:
+                        sqlquery = f'DROP TABLE IF EXISTS {name};'
+                        with engine.connect() as conn:
+                            conn.execute(text(sqlquery))
+                            conn.commit()
+                            finished_workflow = 'false'
+
 elif finished_workflow == 'false':
     st.info ("There's no data to be seen. Run 'Start Pipeline' button first, in 'See The Pipeline'")
-
-    
-
-
-# command to delete json file

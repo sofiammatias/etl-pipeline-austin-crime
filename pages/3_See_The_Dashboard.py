@@ -1,11 +1,7 @@
 import streamlit as st
-from prefect import task, flow 
-import json
-import pydeck as pdk
-import pandas as pd
-import numpy as np
+import matplotlib.pyplot as plt
 import os
-import psycopg2
+from sqlalchemy import create_engine
 import traceback
 from dotenv import load_dotenv
 from read_data_from_postgres import read_all_tables_from_postgres
@@ -56,60 +52,39 @@ destination_path = f"{dest_folder}/{dataset_id}.json"
 # Building app
 st.title("ETL Pipeline - Austin Crime Database 👮‍♂️")
 
-    # App explanation in main page
-# check if connection with Postgresql is sucessful
-try:
-    conn = psycopg2.connect(
-        host=postgres_host,
-        database=postgres_database,
-        user=postgres_user,
-        password=postgres_password,
-        port=postgres_port,
-    )
-    cur = conn.cursor()
+engine = create_engine(f'postgresql://{postgres_user}:{postgres_password}@{postgres_host}:{postgres_port}/{postgres_database}')
 
-except Exception as e:
-    traceback.print_exc()
-    st.write("❗Error: Couldn't create the PostgreSQL connection")
+df_crimes, df_geo, df_hour, df_year, df_top_crimes = read_all_tables_from_postgres(table_id)
+df_top_crimes = df_top_crimes.sort_values('number_of_crimes', ascending=False)[:10]
+
+col1, col2 = st.columns(2)
+fontsize=5
+
+with col1:
+    st.subheader('Number of Crimes by Hour of Day')
+    st.bar_chart (df_hour, x="hour", y="number_of_crimes")
+    fig1, ax1 = plt.subplots()  
+    labels = df_top_crimes['crime_type'].values.tolist()
+    ax1.pie (df_top_crimes['number_of_crimes'].values.tolist())
+    fig1.patch.set_facecolor("#0E1117")
+    fig1.legend(labels=labels, fontsize=fontsize)
+    st.subheader('Number of Crimes by Crime Type (Top10)')
+    st.pyplot(fig1) 
 
 
-_, df_geo, df_hour, df_year, df_top_crimes = read_all_tables_from_postgres(table_id)
+with col2:
+    st.subheader('Number of Crimes per Year')
+    st.bar_chart (df_year, x="year", y="number_of_crimes", color=['#cf3251'])
 
-st.bar_chart (df_hour)
+    df_location = df_crimes[['location_type']].value_counts('location_type', sort=True, ascending=False)[:10]
+    fig2, ax2 = plt.subplots()  
+    labels = df_location.index.tolist()
+    ax2.pie (df_location.values.tolist())
+    fig2.patch.set_facecolor("#0E1117")
+    fig2.legend(labels=labels, fontsize=fontsize)
+    st.subheader('Number of Crimes by Location Type (Top10)')
+    st.pyplot(fig2) 
+
+
+st.subheader('Crime Density Within Austin City')
 st.map(df_geo)
-
-# Define a layer to display on a map
-#layer = pdk.Layer(
-#    "ScatterplotLayer",
-#    df_geo.head(),
-#    pickable=True,
-#    opacity=0.8,
-#    stroked=True,
-#    filled=True,
-#    auto_highlight=True,
-#    extruded=True,
-#    elevation_scale=0.1,
-#    elevation_range=[0, 1],
-#    radius=1,
-#    radius_scale=1,
-#    radius_min_pixels=1,
-#    radius_max_pixels=100,
-#    line_width_min_pixels=1,
-#    get_position=["longitude", "latitude"],
-#    get_radius=8,
-#    get_fill_color=[102, 179, 72],
-#    get_line_color=[0, 0, 0],
-#)
-
-# Set the viewport location
-#view_state = pdk.ViewState(
-#    latitude=-23.562799, longitude=-46.663020, zoom=14, bearing=0, pitch=0
-#)
-
-# Render
-#r = pdk.Deck(
-#    layers=[layer],
-#    initial_view_state=view_state,
-#    map_style="road",
-#    tooltip={"text": "{name}\n{address}"},
-#)

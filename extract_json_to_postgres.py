@@ -3,10 +3,8 @@ NEW: Downloads a json file from Austin Crime website API datapoint.
 Creates a new table in the Postgres server.
 Reads the file as a dataframe and inserts each record to the Postgres table. 
 """
-import psycopg2
+from sqlalchemy import create_engine
 import os
-import traceback2 as traceback
-import logging
 import pandas as pd
 import requests
 import json
@@ -26,32 +24,9 @@ api_url = os.environ.get("api_url")
 dataset_id = os.environ.get("dataset_id")
 table_id = os.environ.get("table_id")
 
-#  Configures logger
-logname = "pipelinelog_part1.log"
-logging.basicConfig(
-    filename=logname,
-    filemode='a',
-    level=logging.INFO, 
-    format="%(asctime)s:%(funcName)s:%(levelname)s:%(message)s"
-)
+engine = create_engine(f'postgresql://{postgres_user}:{postgres_password}@{postgres_host}:{postgres_port}/{postgres_database}')
 
 destination_path = f"{dest_folder}/{dataset_id}.json"
-destination_log = f"{dest_folder}/{logname}"
-
-try:
-    conn = psycopg2.connect(
-        host=postgres_host,
-        database=postgres_database,
-        user=postgres_user,
-        password=postgres_password,
-        port=postgres_port,
-    )
-    cur = conn.cursor()
-    logging.info("Postgres server connection is successful")
-except Exception as e:
-    traceback.print_exc()
-    logging.error("Couldn't create the Postgres connection")
-
 
 def download_json_file_from_url(api_url: str, dest_folder: str, destination_path: str):
     """
@@ -67,34 +42,12 @@ def download_json_file_from_url(api_url: str, dest_folder: str, destination_path
         json_file = data.json()
         with open(destination_path, "w") as file:
             json.dump(json_file, file)
-        logging.info(f"json file downloaded successfully to the working directory {dest_folder}")
+        logger_msg = f"json file downloaded successfully to the working directory {dest_folder}"
     
     except Exception as e:
-        logging.error(f"Error while downloading the json file due to: {e}")
-        traceback.print_exc()
+        logger_msg = f"Error while downloading the json file due to: {e}"
 
-
-
-def create_postgres_table():
-    """
-    Create the Postgres table with a desired schema
-    """
-    try:
-        cur.execute(
-            f"""CREATE TABLE IF NOT EXISTS {table_id} (incident_report_number BIGINT PRIMARY KEY, 
-                    address VARCHAR(100), census_tract FLOAT, clearance_date VARCHAR(50), 
-                    clearance_status VARCHAR(50), council_district FLOAT, category_description VARCHAR(100), 
-                    district VARCHAR(50), location_type VARCHAR(50), crime_type VARCHAR(100), 
-                    family_violence VARCHAR(100), occ_date VARCHAR(50), rep_date_time VARCHAR(50), latitude FLOAT, 
-                    longitude FLOAT, year FLOAT, zipcode VARCHAR(50))"""
-        )
-
-        logging.info(
-            f" New table {table_id} created successfully in postgres server, database {postgres_database}"
-        )
-    except:
-        logging.warning(f" Check if the table {table_id} exists")
-
+    return logger_msg
 
 def write_to_postgres(destination_path: str):
     """
@@ -122,58 +75,24 @@ def write_to_postgres(destination_path: str):
             "zipcode",
         ]
     )
-    inserted_row_count = 0
-    for _, row in df.iterrows():
-        count_query = f"""SELECT COUNT(*) FROM {table_id} WHERE incident_report_number = {row['incident_report_number']}"""
-        cur.execute(count_query)
-        result = cur.fetchone()
-        if result[0] == 0:
-            inserted_row_count += 1
-            cur.execute(
-                f"""INSERT INTO {table_id} (incident_report_number, address, census_tract, clearance_date, clearance_status, council_district, category_description, district, location_type, crime_type, family_violence, occ_date, rep_date_time, latitude, longitude, year, zipcode) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
-                (
-                    int(row[0]),
-                    str(row[1]),
-                    float(row[2]),
-                    str(row[3]),
-                    str(row[4]),
-                    str(row[5]),
-                    str(row[6]),
-                    str(row[7]),
-                    str(row[8]),
-                    str(row[9]),
-                    str(row[10]),
-                    str(row[11]),
-                    str(row[12]),
-                    str(row[13]),                    
-                    float(row[14]),
-                    float(row[15]),
-                    str(row[16]),
-                ),
-            )
-
-    logging.info (f" {inserted_row_count} rows from csv file inserted into {table_id} table successfully")
+    df.to_sql(name = f'{table_id}', con=engine, if_exists='replace')
 
 
 def write_json_to_postgres_main():
-    download_json_file_from_url(api_url, dest_folder, destination_path)
-    create_postgres_table()
-    write_to_postgres(destination_path)
-    conn.commit()
-    cur.close()
-    conn.close()
-    logging.info(f"Connection to {dataset_id} was closed successfully")
-    logging.getLogger().addHandler(logging.StreamHandler())
+    logger_msg1 = download_json_file_from_url(api_url, dest_folder, destination_path)
+    if "successfully" in logger_msg1:
+        write_to_postgres(destination_path)
+        logger_msg2 = f"Table '{table_id}' created in postgreSQL with success"
+    return logger_msg1, logger_msg2
+    
 
 
 if __name__ == "__main__":
-    download_json_file_from_url(api_url, dest_folder, destination_path)
-    create_postgres_table()
-    write_to_postgres(destination_path)
-    conn.commit()
-    cur.close()
-    conn.close()
-    logging.info(f"Connection to {dataset_id} was closed successfully")
-    logging.getLogger().addHandler(logging.StreamHandler())
-
+    logger_msg1 = download_json_file_from_url(api_url, dest_folder, destination_path)
+    print (logger_msg1)
+    if "successfully" in logger_msg1:
+        write_to_postgres(destination_path)
+        logger_msg2 = f"{table_id} created in postgreSQL with success"
+        print (logger_msg2)
+    
 

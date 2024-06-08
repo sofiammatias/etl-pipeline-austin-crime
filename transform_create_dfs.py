@@ -1,17 +1,11 @@
 """
 Reads the Postgres table as a dataframe and creates 4 separate dataframes from main table. 
 """
-import psycopg2
+from sqlalchemy import create_engine
 import os
-import datetime
-import traceback
 import logging
 import pandas as pd
 from dotenv import load_dotenv
-
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s:%(funcName)s:%(levelname)s:%(message)s"
-)
 
 load_dotenv()
 
@@ -26,35 +20,19 @@ table_id = os.environ.get("table_id")
 
 destination_path = f"{dest_folder}/{dataset_id}.csv"
 
-try:
-    conn = psycopg2.connect(
-        host=postgres_host,
-        database=postgres_database,
-        user=postgres_user,
-        password=postgres_password,
-        port=postgres_port,
-    )
-    cur = conn.cursor()
-    logging.info("Postgres server connection is successful")
-except Exception as e:
-    traceback.print_exc()
-    logging.error("Couldn't create the Postgres connection")
+engine = create_engine(f'postgresql://{postgres_user}:{postgres_password}@{postgres_host}:{postgres_port}/{postgres_database}')
 
-
-def create_base_df(cur):
+def create_base_df(engine):
     """
     Get base dataframe of Austin crime public dataset
     """
     try:
-        cur.execute(f"SELECT * FROM {table_id}")
-    except:
-        logging.warning(f" Check if the table {table_id} exists")
-        return
+        sql = f'SELECT * FROM "{table_id}";'
+        df = pd.read_sql_query(sql, con=engine)
+        logger_msg = f"Table {table_id} loaded successfully from postgresql"
+    except Exception as e:
+        logger_msg = f"Error reading table {table_id} from postgresql due to: {e}"
 
-    rows = cur.fetchall()
-
-    col_names = [desc[0] for desc in cur.description]
-    df = pd.DataFrame(rows, columns=col_names)
     # Clean data
     df.rename(columns={"occ_date": "occurred_date"}, inplace=True)
     df.rename(columns={"rep_date_time": "reported_time"}, inplace=True)
@@ -62,21 +40,23 @@ def create_base_df(cur):
     #### Filling nan with average clearance time intervals
     most_common_clearance_date = df["clearance_date"].value_counts().index[1]
     #most_common_clearance_date = datetime.strptime(most_common_clearance_date, '%m/%d/%y %H:%M:%S')
-    df[df['clearance_date'] == 'nan'] = most_common_clearance_date
+    df[df['clearance_date'].isin(['nan'])]['clearance_date'] = most_common_clearance_date
     df["occurred_date"] = pd.to_datetime(df["occurred_date"])
     df["reported_time"] = pd.to_datetime(df["reported_time"])
     df["clearance_date"] = pd.to_datetime(df["clearance_date"])
-    logging.info(
-        f" Table {table_id} loaded successfully into dataframe from database {postgres_database}"
-    )
-    return df
+    return df, logger_msg
 
 
 def create_df_geo(df):
     """
     Create dataframe from Austin crime public dataset with longitude and latitude data
     """
-    df_geo = df.dropna(subset=["latitude", "longitude"])
+    df_geo = df[['crime_type', 'district', 'latitude', 'longitude']]
+    df_geo = df_geo.dropna(subset=["latitude", "longitude"])
+    df_geo.drop(df_geo[df_geo['latitude'] > 32].index, inplace = True)
+    df_geo.drop(df_geo[df_geo['latitude'] < 28].index, inplace = True)
+    df_geo.drop(df_geo[df_geo['longitude'] > -95].index, inplace = True)
+    df_geo.drop(df_geo[df_geo['longitude'] < -99].index, inplace = True)
     return df_geo
 
 
@@ -84,12 +64,9 @@ def create_crimes_per_hour(df):
     """
     Create dataframe with number of crimes per hour of the day from Austin crime public dataset
     """
-    breakpoint()
     crimes_per_hour = df["reported_time"].dt.hour.value_counts().sort_index()
     df_crimes_per_hour = crimes_per_hour.reset_index()
     df_crimes_per_hour.columns = ["hour", "number_of_crimes"]
-    df_crimes_per_hour = df_crimes_per_hour.groupby(["hour"]).sum()
-    df_crimes_per_hour = df_crimes_per_hour.reset_index()
     return df_crimes_per_hour
 
 
@@ -100,7 +77,6 @@ def create_crimes_per_year(df):
     crimes_per_year = df["occurred_date"].dt.year.value_counts().sort_index()
     df_crimes_per_year = crimes_per_year.reset_index()
     df_crimes_per_year.columns = ["year", "number_of_crimes"]
-    df_crimes_per_year = df_crimes_per_year.groupby(["year"]).sum()
 
     return df_crimes_per_year
 
