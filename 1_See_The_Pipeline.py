@@ -59,24 +59,25 @@ col1, col2 = st.columns([5,4])
 with col1:
     with st.expander ("How to use this app:"):
         st.markdown (
-        """  **SEE THE PIPELINE** :  \n  - Press **'See How Pipeline Works'** to know what the pipeline 
+        """  **SEE THE PIPELINE** :  \n  - Press the button after the text **'See How Pipeline Works'** to know what the pipeline 
         does \n  - Press **'Start Pipeline'** to run the pipeline """)
 
     st.markdown(
         """This project simulates a small **ETL automated data pipeline**, using *Prefect*. ETL stands for 
         Extract-Transform-Load and in this app you can see how data goes through those steps:""")
-
-    st.markdown(""" - Download data from https://data.austintexas.gov/ API as json file - Extract  \n  - Creation 
-                of postgreSQL database to feed it with the .json file's info - Extract  \n  - Creation of relevant
-                dataframes from the original table, a small data warehouse - Transform  \n  - Load dataframes 
-                into the PostgreSQL database - Load  \n  - Creation of a dashboard (we want to see the data, right?)""")
+    st.markdown(
+         """ - EXTRACT: Download data from https://data.austintexas.gov/ API (json file); Create a PostgreSQL 
+         database and upload data from .json file  \n - TRANSFORM: Clean and transform data into
+         relevant tables  \n - LOAD: Load all tables into the database; Create a dashboard""")
 
     # Add buttons
-    show_workflow_button = st.button ("See How Pipeline Works", type="primary")
-    start_workflow_button = st.button ("Start Pipeline")
+    col11, col12 = st.columns(2)
+    with col11:
+        show_workflow_button = st.button ("See How Pipeline Works", type="primary")
+    with col12:
+        start_workflow_button = st.button ("Start Pipeline")
     if start_workflow_button:
         # See the log file once you start the workflow
-        st.write ("Check log file from pipeline run")
         log1 = st.expander("Check log file for pipeline run")
             # Run the script file
             #result = subprocess.Popen(['bash', 'run.sh'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
