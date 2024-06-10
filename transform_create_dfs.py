@@ -3,7 +3,6 @@ Reads the Postgres table as a dataframe and creates 4 separate dataframes from m
 """
 from sqlalchemy import create_engine
 import os
-import logging
 import pandas as pd
 from dotenv import load_dotenv
 

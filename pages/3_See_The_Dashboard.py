@@ -2,7 +2,6 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import os
 from sqlalchemy import create_engine
-import traceback
 from dotenv import load_dotenv
 from read_data_from_postgres import read_all_tables_from_postgres
 
