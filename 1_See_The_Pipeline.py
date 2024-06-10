@@ -3,6 +3,7 @@ import time
 import os
 import subprocess
 from dotenv import load_dotenv
+import sys
 
 
 st.set_page_config(page_title='ETL Pipeline' ,layout="wide",page_icon='🔁')
@@ -121,6 +122,7 @@ with col1:
                 time.sleep(0.5)
                 st.markdown(card((46, 216, 182),(255,255,255), "Visualize: Dashboard", "Create visuals with new tables"), unsafe_allow_html=True)
         
+        # Real pipeline running
         if start_workflow_button:
             container1.empty()
             with container1:
@@ -133,7 +135,7 @@ with col1:
                     st.markdown(card((64, 153, 255),(255,255,255), "", "Pipeline Started"), unsafe_allow_html=True)
                     st.markdown("<div style='text-align: center; font-size: 30px;'>🔽</div>", unsafe_allow_html=True)
                     # Start actual pipeline workflow with stdout showing in expander 'log1'
-                    command = ["python", '-u', 'etl-workflow.py']
+                    command = [f"{sys.executable}", '-u', 'etl-workflow.py']
                     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
                     i = 0 # Index to control which flow step to show
                     flowstep = False # flag to check if a flow step has been printed (and not reapeat it)
