@@ -4,7 +4,6 @@ from sqlalchemy import create_engine, text
 from dotenv import load_dotenv
 from read_data_from_postgres import read_all_tables_from_postgres
 
-
 st.set_page_config(page_title='ETL Pipeline' ,layout="wide",page_icon='🔁')
 
 # Some functions
