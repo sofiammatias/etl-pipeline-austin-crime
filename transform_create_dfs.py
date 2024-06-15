@@ -2,22 +2,20 @@
 Reads the Postgres table as a dataframe and creates 4 separate dataframes from main table. 
 """
 from sqlalchemy import create_engine
-import os
+import streamlit as st
 import pandas as pd
-from dotenv import load_dotenv
 
-load_dotenv()
 
-postgres_host = os.environ.get("postgres_host")
-postgres_database = os.environ.get("postgres_database")
-postgres_user = os.environ.get("postgres_user")
-postgres_password = os.environ.get("postgres_password")
-postgres_port = os.environ.get("postgres_port")
-dest_folder = os.environ.get("dest_folder")
-dataset_id = os.environ.get("dataset_id")
-table_id = os.environ.get("table_id")
-
-destination_path = f"{dest_folder}/{dataset_id}.csv"
+postgres_host = st.secrets.postgres_host
+postgres_database = st.secrets.postgres_database
+postgres_user = st.secrets.postgres_user
+postgres_password = st.secrets.postgres_password
+postgres_port = st.secrets.postgres_port
+dest_folder = st.secrets.dest_folder
+api_url = st.secrets.api_url
+dataset_id = st.secrets.dataset_id
+table_id = st.secrets.table_id
+destination_path = f"{dest_folder}/{dataset_id}.json"
 
 engine = create_engine(f'postgresql://{postgres_user}:{postgres_password}@{postgres_host}:{postgres_port}/{postgres_database}')
 

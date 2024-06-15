@@ -5,4 +5,4 @@ python-dotenv==1.0.0
 streamlit==1.29.0
 matplotlib==3.8.2
 sqlalchemy==2.0.30
-psycopg2-binary
+#psycopg2-binary

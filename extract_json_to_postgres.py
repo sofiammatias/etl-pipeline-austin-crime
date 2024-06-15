@@ -4,29 +4,27 @@ Creates a new table in the Postgres server.
 Reads the file as a dataframe and inserts each record to the Postgres table. 
 """
 from sqlalchemy import create_engine
+import streamlit as st
 import os
 import pandas as pd
 import requests
 import json
-from dotenv import load_dotenv
 
 
-# Loads environmental vars from .env
-load_dotenv()
+# Loads environmental vars from secrets.toml
 
-postgres_host = os.environ.get("postgres_host")
-postgres_database = os.environ.get("postgres_database")
-postgres_user = os.environ.get("postgres_user")
-postgres_password = os.environ.get("postgres_password")
-postgres_port = os.environ.get("postgres_port")
-dest_folder = os.environ.get("dest_folder")
-api_url = os.environ.get("api_url")
-dataset_id = os.environ.get("dataset_id")
-table_id = os.environ.get("table_id")
+postgres_host = st.secrets.postgres_host
+postgres_database = st.secrets.postgres_database
+postgres_user = st.secrets.postgres_user
+postgres_password = st.secrets.postgres_password
+postgres_port = st.secrets.postgres_port
+dest_folder = st.secrets.dest_folder
+api_url = st.secrets.api_url
+dataset_id = st.secrets.dataset_id
+table_id = st.secrets.table_id
+destination_path = f"{dest_folder}/{dataset_id}.json"
 
 engine = create_engine(f'postgresql://{postgres_user}:{postgres_password}@{postgres_host}:{postgres_port}/{postgres_database}')
-
-destination_path = f"{dest_folder}/{dataset_id}.json"
 
 def download_json_file_from_url(api_url: str, dest_folder: str, destination_path: str):
     """
@@ -75,7 +73,7 @@ def write_to_postgres(destination_path: str):
             "zipcode",
         ]
     )
-    df.to_sql(name = f'{table_id}', con=engine, if_exists='replace')
+    df.to_sql(name = f'{table_id}', con=engine, if_exists='replace', index=False)
 
 
 def write_json_to_postgres_main():

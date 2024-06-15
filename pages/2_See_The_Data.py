@@ -1,7 +1,6 @@
 import streamlit as st
 import os
 from sqlalchemy import create_engine, text
-from dotenv import load_dotenv
 from read_data_from_postgres import read_all_tables_from_postgres
 
 st.set_page_config(page_title='ETL Pipeline' ,layout="wide",page_icon='🔁')
@@ -32,25 +31,25 @@ def card(wch_colour_box, wch_colour_font, sline, i, iconname=None):
                             margin-top: 0;'>{sline}</style></span></p>"""
       return lnk + htmlstr
 
-# Loads environmental vars from .env
-load_dotenv()
+# Loads environmental vars from secrets.toml
 
-postgres_host = os.environ.get("postgres_host")
-postgres_database = os.environ.get("postgres_database")
-postgres_user = os.environ.get("postgres_user")
-postgres_password = os.environ.get("postgres_password")
-postgres_port = os.environ.get("postgres_port")
-dest_folder = os.environ.get("dest_folder")
-api_url = os.environ.get("api_url")
-dataset_id = os.environ.get("dataset_id")
-table_id = os.environ.get("table_id")
+postgres_host = st.secrets.postgres_host
+postgres_database = st.secrets.postgres_database
+postgres_user = st.secrets.postgres_user
+postgres_password = st.secrets.postgres_password
+postgres_port = st.secrets.postgres_port
+dest_folder = st.secrets.dest_folder
+api_url = st.secrets.api_url
+dataset_id = st.secrets.dataset_id
+table_id = st.secrets.table_id
 destination_path = f"{dest_folder}/{dataset_id}.json"
-finished_workflow = os.environ.get("finished_workflow")
+finished_workflow = st.secrets.finished_workflow
 
 engine = create_engine(f'postgresql://{postgres_user}:{postgres_password}@{postgres_host}:{postgres_port}/{postgres_database}')
 
 # Building app
 st.title("ETL Pipeline - Austin Crime Database 👮‍♂️")
+st.write (finished_workflow)
 
 with st.expander ("How to use this app:"):
     st.markdown (
@@ -83,6 +82,7 @@ if finished_workflow == 'true':
     labels = [f"Detailed table {table_id}", f"Table {table_id}_geo", f"Table {table_id}_crimes_by_hour",f"Table {table_id}_crimes_by_year", f"Table {table_id}_top_crimes", "5 latest records"]
     if len(f) == 0:
         del_labels = ["None", "SQL tables (all)"]
+        filename = '(empty)'
     else:
         del_labels = ["None", f"File {f[0]}", "SQL tables (all)"]
         filename = f
@@ -109,13 +109,13 @@ if finished_workflow == 'true':
                 elif option1 == 'None':
                     st.write('Nothing to delete')
                 else:
-                    tablenames = [f"{table_id}", f"{table_id}_geo", f"{table_id}_crimes_by_hour",f"{table_id}_crimes_by_year", f"{table_id}_top_crimes"]
+                    tablenames = [f"{table_id}", f"{table_id}_geo", f"{table_id}_crimes_per_hour",f"{table_id}_crimes_per_year", f"{table_id}_top_crimes"]
                     for name in tablenames:
-                        sqlquery = f'DROP TABLE IF EXISTS {name};'
+                        sqlquery = f'DROP TABLE IF EXISTS "{name}";'
                         with engine.connect() as conn:
                             conn.execute(text(sqlquery))
                             conn.commit()
-                            finished_workflow = 'false'
+                            st.secrets.finished_workflow = 'false'
 
 elif finished_workflow == 'false':
     st.info ("There's no data to be seen. Run 'Start Pipeline' button first, in 'See The Pipeline'")

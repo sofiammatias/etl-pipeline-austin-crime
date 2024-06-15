@@ -1,8 +1,6 @@
 import streamlit as st
 import matplotlib.pyplot as plt
-import os
 from sqlalchemy import create_engine
-from dotenv import load_dotenv
 from read_data_from_postgres import read_all_tables_from_postgres
 
 st.set_page_config(page_title='ETL Pipeline' ,layout="wide",page_icon='🔁')
@@ -33,20 +31,19 @@ def card(wch_colour_box, wch_colour_font, sline, i, iconname=None):
                             margin-top: 0;'>{sline}</style></span></p>"""
       return lnk + htmlstr
 
-# Loads environmental vars from .env
-load_dotenv()
+# Loads environmental vars from secrets.toml
 
-postgres_host = os.environ.get("postgres_host")
-postgres_database = os.environ.get("postgres_database")
-postgres_user = os.environ.get("postgres_user")
-postgres_password = os.environ.get("postgres_password")
-postgres_port = os.environ.get("postgres_port")
-dest_folder = os.environ.get("dest_folder")
-api_url = os.environ.get("api_url")
-dataset_id = os.environ.get("dataset_id")
-table_id = os.environ.get("table_id")
-finished_workflow = os.environ.get("finished_workflow")
+postgres_host = st.secrets.postgres_host
+postgres_database = st.secrets.postgres_database
+postgres_user = st.secrets.postgres_user
+postgres_password = st.secrets.postgres_password
+postgres_port = st.secrets.postgres_port
+dest_folder = st.secrets.dest_folder
+api_url = st.secrets.api_url
+dataset_id = st.secrets.dataset_id
+table_id = st.secrets.table_id
 destination_path = f"{dest_folder}/{dataset_id}.json"
+finished_workflow = st.secrets.finished_workflow
 
 # Building app
 st.title("ETL Pipeline - Austin Crime Database 👮‍♂️")

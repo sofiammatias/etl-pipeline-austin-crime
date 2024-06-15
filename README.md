@@ -2,11 +2,12 @@
 
 The aim of this small project is to showcase data engineering skills such as:
 
+- Creating a database from existing containers
 - Building data pipelines and data flows
 - Extracting data
 - Storing data
 - Cleaning data (remove nan's, format data types, etc.)
-- Tools used: SQL, Python (Pandas, SQLAchemy), Prefect, Streamlit
+- Tools used: SQL, Python (Pandas, SQLAchemy), Prefect, Streamlit, Docker, Google Compute Engine
 
 ## ETL Pipeline App
 
@@ -43,8 +44,13 @@ The app is divided in 3 pages: 'See The Pipeline', 'See the Data' and 'See The D
 
 ## Project Challenges And Conclusions
 
-The most difficult part of this project was to deploy it with a postgreSQL database in the Streamlit server.
+Using API's and SQL databases is very common in data engineering and so they were chosen to build this data pipeline. The most difficult part of this project was to deploy a postgreSQL database to work with the app running in the Streamlit Community server. It could not be a local solution, as the Streamlit server can't access my local machine. Hosting Postgres databases in a platform was overkill and overpriced everywhere (including Google Cloud SQL). 
 
-Using API's and SQL databases is very common in data engineering and so they were chosen to build this data pipeline. However, this would not be the best choice to store information with the app live in the Streamlit server. I would rather have used Big Query from Google to store the data, due to connection and data handling simplicity.  
+In the end, I've ended up using the most economic solution I could find: a **virtual machine** with PostgreSQL installed that runs in [Free Tier Google Compute Engine](https://cloud.google.com/free/docs/free-cloud-features#compute) tool. The virtual machine consists in a **e2-micro machine type** with 2 shared vCPUs, 1Gb of Memory and 10Gb of disk allocated. See how to deploy a Postgres database in a cheap virtual machine in [this post](https://joncloudgeek.com/blog/deploy-postgres-container-to-compute-engine/). 
 
-Most data manipulation and data cleaning was done using Pandas package. However, we could have easily adapted this project to use SQL queries (if they were pre-built).
+The virtual machine is not very reliable, as it can be stopped at any time due to the virtual machine settings (shared hardware allocation with minimum priorities). However, this app will be used as a demo, probably just a couple of hours in total per month, and only by a user at a time. There's no need for high-performance, 24/7 reliable solutions. It just needs to run when the app is activated. The minimum settings are enough for this application and the cost varies between 0$-3$.
+
+For local development and testing, I've used a **PostgreSQL database running in a Docker container**. This solution allows to easily configure and run a Postgres database for other needs, using the compose.yaml file. Data manipulation and data cleaning was done using Pandas package. However, we could have easily adapted this project to use SQL queries (if they were pre-built).
+
+As a footnote, and if we were to use 4 to 5 tables with less that 50 columns each in a real life case, the most suitable solution to store data would be to simply use a csv file inside the app. SQL databases would be overkill for this, especially because data is stored elsewhere and you only wish to access it.
+

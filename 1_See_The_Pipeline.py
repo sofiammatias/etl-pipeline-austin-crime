@@ -1,8 +1,6 @@
 import streamlit as st
 import time
-import os
 import subprocess
-from dotenv import load_dotenv
 import sys
 
 
@@ -36,18 +34,17 @@ def card(wch_colour_box, wch_colour_font, sline, i, iconname=None):
 
 
 
-# Loads environmental vars from .env
-load_dotenv()
+# Loads environmental vars from secrets.toml
 
-postgres_host = os.environ.get("postgres_host")
-postgres_database = os.environ.get("postgres_database")
-postgres_user = os.environ.get("postgres_user")
-postgres_password = os.environ.get("postgres_password")
-postgres_port = os.environ.get("postgres_port")
-dest_folder = os.environ.get("dest_folder")
-api_url = os.environ.get("api_url")
-dataset_id = os.environ.get("dataset_id")
-table_id = os.environ.get("table_id")
+postgres_host = st.secrets.postgres_host
+postgres_database = st.secrets.postgres_database
+postgres_user = st.secrets.postgres_user
+postgres_password = st.secrets.postgres_password
+postgres_port = st.secrets.postgres_port
+dest_folder = st.secrets.dest_folder
+api_url = st.secrets.api_url
+dataset_id = st.secrets.dataset_id
+table_id = st.secrets.table_id
 destination_path = f"{dest_folder}/{dataset_id}.json"
 
 # Building app
@@ -173,5 +170,5 @@ with col1:
                     # end of pipeline workflow execution
                     st.markdown(card((46, 216, 182),(255,255,255), "", "Pipeline Finished!"), unsafe_allow_html=True)
                     status.update(label="Pipeline finished!", state="complete", expanded=True)
-                    os.environ["finished_workflow"] = 'true'
+                    st.secrets.finished_workflow = 'true'
 
