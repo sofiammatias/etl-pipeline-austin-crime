@@ -22,13 +22,18 @@ This data engineering project simulates a small **ETL automated data pipeline**,
 
 The pipeline retrieves a .json file from https://data.austintexas.gov/ API and saves it into a local folder called *data*. The pipeline then creates 5 tables into our postgreSQL database: 
 - a detailed table with cleaned data from the .json file (most relevant columns)
-- 4 final tables with aggragated / resumed data for analysis. 
+- 4 final tables with aggregated / resumed data for analysis. 
+
+![image](https://github.com/sofiammatias/etl-pipeline-austin-crime/assets/114782592/b348c309-1fd3-4933-9562-09c802125a55)
+
 
 The app allows you to delete all the data collected to show we have an actual pipeline running in Prefect, and is not just showing some preloaded data and a fancy pipeline animation. 
 
 Finally, the app builds a very simple dashboard with 5 visuals to show what you can build with the collected data. The aim of this project is not to analyse it, but it is interesting to observe, for example, that 2024 has around 800 crimes reported, while for other years the number is very low, and some years are missing. We may have biased data here, where what we are actually seeing is not a real yearly distribution of crimes, but a poor data collection (or perhaps the database was cleaned in 2024, from previous years)
 
 ## How To Use This App
+
+[**See the app here**](https://etl-pipeline-austin-crime.streamlit.app/)
 
 The app is divided in 3 pages: 'See The Pipeline', 'See the Data' and 'See The Dashboard'
 
@@ -49,6 +54,9 @@ The app is divided in 3 pages: 'See The Pipeline', 'See the Data' and 'See The D
 Using API's and SQL databases is very common in data engineering and so they were chosen to build this data pipeline. The most difficult part of this project was to deploy a postgreSQL database to work with the app running in the Streamlit Community server. It could not be a local solution, as the Streamlit server can't access my local machine. Hosting Postgres databases in a platform was overkill and overpriced everywhere (including Google Cloud SQL). 
 
 In the end, I've ended up using the most economic solution I could find: a **virtual machine** with PostgreSQL installed that runs in [Free Tier Google Compute Engine](https://cloud.google.com/free/docs/free-cloud-features#compute) tool. The virtual machine consists in a **e2-micro machine type** with 2 shared vCPUs, 1Gb of Memory and 10Gb of disk allocated. See how to deploy a Postgres database in a cheap virtual machine in [this post](https://joncloudgeek.com/blog/deploy-postgres-container-to-compute-engine/). 
+
+<img width="665" alt="Screenshot 2024-06-14 111016" src="https://github.com/sofiammatias/etl-pipeline-austin-crime/assets/114782592/a50195c0-1ad3-48f8-bf13-fe48f3d42e6d">
+
 
 The virtual machine is not very reliable, as it can be stopped at any time due to the virtual machine settings (shared hardware allocation with minimum priorities). However, this app will be used as a demo, probably just a couple of hours in total per month, and only by a user at a time. There's no need for high-performance, 24/7 reliable solutions. It just needs to run when the app is activated. The minimum settings are enough for this application and the cost varies between 0$-3$.
 
