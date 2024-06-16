@@ -114,7 +114,7 @@ if finished_workflow == 'true':
                             conn.execute(text(sqlquery))
                             conn.commit()
                             st.secrets.finished_workflow = 'false'
-                st.experimental_rerun()
+                st.rerun()
 
 elif finished_workflow == 'false':
     st.info ("There's no data to be seen. Run 'Start Pipeline' button first, in 'See The Pipeline'")
