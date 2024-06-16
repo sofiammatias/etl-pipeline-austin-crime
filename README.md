@@ -1,5 +1,7 @@
 # ETL PIPELINE - AUSTIN CRIME DATABASE 👮‍♂️
 
+![image](https://github.com/sofiammatias/etl-pipeline-austin-crime/assets/114782592/867916a3-37a4-4884-b9a3-899b37699b86)
+
 The aim of this small project is to showcase data engineering skills such as:
 
 - Creating a database from existing containers
