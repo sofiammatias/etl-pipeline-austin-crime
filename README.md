@@ -20,7 +20,7 @@ This data engineering project simulates a small **ETL automated data pipeline**,
  - TRANSFORM phase: Creating relevant SQL tables and corresponding python dataframes from the original table, to biuld our data warehouse. These tables will contain cleaned and correctly formatted data, as well as aggregations of the most relevant subjects (number of crimes per year, daily histogram, top crimes commited and crimes geographical distribution among the city of Austin). 
  - LOAD phase: Tables will be kept in the postgreSQL database.
 
-![image](https://github.com/sofiammatias/etl-pipeline-austin-crime/assets/114782592/b348c309-1fd3-4933-9562-09c802125a55)
+<img src = "https://github.com/sofiammatias/etl-pipeline-austin-crime/assets/114782592/b348c309-1fd3-4933-9562-09c802125a55" width="500" />
 
 
 The pipeline retrieves a .json file from https://data.austintexas.gov/ API and saves it into a local folder called *data*. The pipeline then creates 5 tables into our postgreSQL database: 
