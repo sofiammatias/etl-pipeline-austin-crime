@@ -1,4 +1,4 @@
-# ETL PIPELINE - AUSTIN CRIME DATABASE 👮‍♂️
+# ETL Pipeline - Austin Crime Database 👮‍♂️
 
 ![image](https://github.com/sofiammatias/etl-pipeline-austin-crime/assets/114782592/867916a3-37a4-4884-b9a3-899b37699b86)
 
@@ -20,12 +20,12 @@ This data engineering project simulates a small **ETL automated data pipeline**,
  - TRANSFORM phase: Creating relevant SQL tables and corresponding python dataframes from the original table, to biuld our data warehouse. These tables will contain cleaned and correctly formatted data, as well as aggregations of the most relevant subjects (number of crimes per year, daily histogram, top crimes commited and crimes geographical distribution among the city of Austin). 
  - LOAD phase: Tables will be kept in the postgreSQL database.
 
+![image](https://github.com/sofiammatias/etl-pipeline-austin-crime/assets/114782592/b348c309-1fd3-4933-9562-09c802125a55)
+
+
 The pipeline retrieves a .json file from https://data.austintexas.gov/ API and saves it into a local folder called *data*. The pipeline then creates 5 tables into our postgreSQL database: 
 - a detailed table with cleaned data from the .json file (most relevant columns)
 - 4 final tables with aggregated / resumed data for analysis. 
-
-![image](https://github.com/sofiammatias/etl-pipeline-austin-crime/assets/114782592/b348c309-1fd3-4933-9562-09c802125a55)
-
 
 The app allows you to delete all the data collected to show we have an actual pipeline running in Prefect, and is not just showing some preloaded data and a fancy pipeline animation. 
 
