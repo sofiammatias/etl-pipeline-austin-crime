@@ -49,7 +49,6 @@ engine = create_engine(f'postgresql://{postgres_user}:{postgres_password}@{postg
 
 # Building app
 st.title("ETL Pipeline - Austin Crime Database 👮‍♂️")
-st.write (finished_workflow)
 
 with st.expander ("How to use this app:"):
     st.markdown (
@@ -93,11 +92,10 @@ if finished_workflow == 'true':
             st.write("📂 *data* folder:")
             st.write(filename)
 
-        options_dict_dfs = {'Detailed': df_crimes, '_geo': df_geo, '_hour': df_hour, '_year': df_year, '_top': df_top_crimes, '5 records': five_records}
+        options_dict_dfs = {'Detailed': df_crimes, '_geo': df_geo, '_hour': df_hour, '_year': df_year, '_top': df_top_crimes, 'latest records': five_records}
         option2 = st.selectbox("Choose a table:", labels)
         for key in options_dict_dfs.keys():
             if key in option2:
-                st.write(key)
                 st.dataframe(options_dict_dfs[key])
     
     with col2:
@@ -116,6 +114,7 @@ if finished_workflow == 'true':
                             conn.execute(text(sqlquery))
                             conn.commit()
                             st.secrets.finished_workflow = 'false'
+                st.experimental_rerun()
 
 elif finished_workflow == 'false':
     st.info ("There's no data to be seen. Run 'Start Pipeline' button first, in 'See The Pipeline'")

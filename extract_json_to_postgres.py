@@ -43,7 +43,7 @@ def download_json_file_from_url(api_url: str, dest_folder: str, destination_path
         logger_msg = f"json file downloaded successfully to the working directory {dest_folder}"
     
     except Exception as e:
-        logger_msg = f"Error while downloading the json file due to: {e}"
+        logger_msg = f"Error while downloading the json file due to: {e}. Check if website is unavailable:https://data.austintexas.gov/ and try later."
 
     return logger_msg
 
@@ -81,6 +81,8 @@ def write_json_to_postgres_main():
     if "successfully" in logger_msg1:
         write_to_postgres(destination_path)
         logger_msg2 = f"Table '{table_id}' created in postgreSQL with success"
+    else:
+        logger_msg2 = f"Error creating table '{table_id}' in postgreSQL"
     return logger_msg1, logger_msg2
     
 

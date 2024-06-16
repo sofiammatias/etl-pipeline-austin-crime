@@ -154,6 +154,7 @@ with col1:
                         elif "Finished creating final transformed tables" in line:
                             i = 3
                             flowstep = True
+                            st.secrets.finished_workflow = 'true'
                         elif  "'All states completed.'" in line:
                             i = 4
                             flowstep = True
@@ -170,5 +171,5 @@ with col1:
                     # end of pipeline workflow execution
                     st.markdown(card((46, 216, 182),(255,255,255), "", "Pipeline Finished!"), unsafe_allow_html=True)
                     status.update(label="Pipeline finished!", state="complete", expanded=True)
-                    st.secrets.finished_workflow = 'true'
+                    
 
